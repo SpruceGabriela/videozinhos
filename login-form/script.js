@@ -1,24 +1,17 @@
 const init = () => {
   const validateEmail = ($element) => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const emailTest = regex.test($element.value);
+    const isValidEmail = regex.test($element.value);
 
-    if (!emailTest) {
-      setError($element);
-    } else {
-      removeError($element);
-    }
+    !isValidEmail && setError($element);
+    isValidEmail && removeError($element);
   };
 
   const validatePassword = ($element) => {
-    if ($element.value.length < 8) {
-      setError($element);
-    } else {
-      removeError($element);
-    }
+    const isInvalid = $element.value.length < 8;
+    isInvalid && setError($element);
+    !isInvalid && removeError($element);
   };
-
-  const handleState = (condition, $element) => {};
 
   const setError = ($element) => {
     $element.removeAttribute("valid");
