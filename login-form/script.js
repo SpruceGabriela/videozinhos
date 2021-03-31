@@ -1,25 +1,42 @@
 const init = () => {
   const validateEmail = ($element) => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const emailTest = regex.test(input.value);
+    const emailTest = regex.test($element.value);
 
     if (!emailTest) {
-      $submit.setAttribute("disabled", "disabled");
-      $element.nextElementSibling.classList.add("error");
+      setError($element);
     } else {
-      $submit.removeAttribute("disabled");
-      $element.nextElementSibling.classList.remove("error");
+      removeError($element);
     }
   };
 
   const validatePassword = ($element) => {
     if ($element.value.length < 8) {
-      $submit.setAttribute("disabled", "disabled");
-      $element.nextElementSibling.classList.add("error");
+      setError($element);
     } else {
-      $submit.removeAttribute("disabled");
-      $element.nextElementSibling.classList.remove("error");
+      removeError($element);
     }
+  };
+
+  const handleState = (condition, $element) => {};
+
+  const setError = ($element) => {
+    $element.removeAttribute("valid");
+    $element.nextElementSibling.classList.add("error");
+    updateFormState($element);
+  };
+
+  const removeError = ($element) => {
+    $element.setAttribute("valid", "");
+    $element.nextElementSibling.classList.remove("error");
+    updateFormState($element);
+  };
+
+  const updateFormState = ($element) => {
+    const { form: $form } = $element;
+    const $controls = [...$form.elements].filter((element) => element.tagName !== "BUTTON");
+    const isFormInvalid = $controls.some(($element) => !$element.hasAttribute("valid"));
+    $submit.disabled = isFormInvalid;
   };
 
   const $email = document.querySelector('input[type="email"]');
