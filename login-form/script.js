@@ -1,27 +1,24 @@
 const init = () => {
-  const validateEmail = (event) => {
-    const input = event.currentTarget;
+  const validateEmail = ($element) => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const emailTest = regex.test(input.value);
 
     if (!emailTest) {
       $submit.setAttribute("disabled", "disabled");
-      input.nextElementSibling.classList.add("error");
+      $element.nextElementSibling.classList.add("error");
     } else {
       $submit.removeAttribute("disabled");
-      input.nextElementSibling.classList.remove("error");
+      $element.nextElementSibling.classList.remove("error");
     }
   };
 
-  const validatePassword = (event) => {
-    const input = event.currentTarget;
-
-    if (input.value.length < 8) {
+  const validatePassword = ($element) => {
+    if ($element.value.length < 8) {
       $submit.setAttribute("disabled", "disabled");
-      input.nextElementSibling.classList.add("error");
+      $element.nextElementSibling.classList.add("error");
     } else {
       $submit.removeAttribute("disabled");
-      input.nextElementSibling.classList.remove("error");
+      $element.nextElementSibling.classList.remove("error");
     }
   };
 
@@ -29,8 +26,8 @@ const init = () => {
   const $password = document.querySelector('input[type="password"]');
   const $submit = document.querySelector(".login__submit");
 
-  $email.addEventListener("input", validateEmail);
-  $password.addEventListener("input", validatePassword);
+  $email.addEventListener("input", () => validateEmail($email));
+  $password.addEventListener("input", () => validatePassword($password));
 
   const errorHandler = () => {
     $submit.classList.remove("loading");
