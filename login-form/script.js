@@ -5,10 +5,10 @@ const init = () => {
     const emailTest = regex.test(input.value);
 
     if (!emailTest) {
-      submitButton.setAttribute("disabled", "disabled");
+      $submit.setAttribute("disabled", "disabled");
       input.nextElementSibling.classList.add("error");
     } else {
-      submitButton.removeAttribute("disabled");
+      $submit.removeAttribute("disabled");
       input.nextElementSibling.classList.remove("error");
     }
   };
@@ -17,40 +17,40 @@ const init = () => {
     const input = event.currentTarget;
 
     if (input.value.length < 8) {
-      submitButton.setAttribute("disabled", "disabled");
+      $submit.setAttribute("disabled", "disabled");
       input.nextElementSibling.classList.add("error");
     } else {
-      submitButton.removeAttribute("disabled");
+      $submit.removeAttribute("disabled");
       input.nextElementSibling.classList.remove("error");
     }
   };
 
-  const inputEmail = document.querySelector('input[type="email"]');
-  const inputPassword = document.querySelector('input[type="password"]');
-  const submitButton = document.querySelector(".login__submit");
+  const $email = document.querySelector('input[type="email"]');
+  const $password = document.querySelector('input[type="password"]');
+  const $submit = document.querySelector(".login__submit");
 
-  inputEmail.addEventListener("input", validateEmail);
-  inputPassword.addEventListener("input", validatePassword);
+  $email.addEventListener("input", validateEmail);
+  $password.addEventListener("input", validatePassword);
 
   const errorHandler = () => {
-    submitButton.classList.remove("loading");
-    submitButton.classList.remove("success");
-    submitButton.classList.add("error");
-    submitButton.textContent = "Error :(";
+    $submit.classList.remove("loading");
+    $submit.classList.remove("success");
+    $submit.classList.add("error");
+    $submit.textContent = "Error :(";
   };
 
   const successHandler = () => {
-    submitButton.classList.remove("loading");
-    submitButton.classList.remove("error");
-    submitButton.classList.add("success");
-    submitButton.textContent = "Sent! :)";
+    $submit.classList.remove("loading");
+    $submit.classList.remove("error");
+    $submit.classList.add("success");
+    $submit.textContent = "Sent! :)";
   };
 
-  if (submitButton) {
-    submitButton.addEventListener("click", (event) => {
+  if ($submit) {
+    $submit.addEventListener("click", (event) => {
       event.preventDefault();
 
-      submitButton.textContent = "Loading...";
+      $submit.textContent = "Loading...";
 
       fetch("https://reqres.in/api/login", {
         method: "POST",
@@ -58,8 +58,8 @@ const init = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: inputEmail.value,
-          password: inputPassword.value,
+          email: $email.value,
+          password: $password.value,
         }),
       })
         .then((response) => {
