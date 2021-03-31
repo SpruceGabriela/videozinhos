@@ -39,11 +39,6 @@ const init = () => {
   $email.addEventListener("input", () => validateEmail($email));
   $password.addEventListener("input", () => validatePassword($password));
 
-  $email.value = "eve.holt@reqres.in";
-  $password.value = "cityslicka2==";
-  validateEmail($email);
-  validatePassword($password);
-
   const setErrorState = () => {
     $submit.classList.remove("loading");
     $submit.classList.remove("success");
@@ -59,7 +54,7 @@ const init = () => {
   };
 
   function handleRequestErrors(response) {
-    if (!response.ok || response.type === "cors") {
+    if (!response.ok) {
       throw Error(response);
     }
     return response;
@@ -67,6 +62,9 @@ const init = () => {
 
   $submit?.addEventListener("click", (event) => {
     event.preventDefault();
+    const [{ value: email }, { value: password }] = [$email, $password];
+    const isEmpty = [email, password].map((item) => item.trim()).some((item) => item === "");
+    if (isEmpty) return;
 
     $submit.textContent = "Loading...";
 
@@ -76,8 +74,8 @@ const init = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: $email.value,
-        password: $password.value,
+        email: email,
+        password: password,
       }),
     })
       .then(handleRequestErrors)
@@ -85,5 +83,4 @@ const init = () => {
       .catch(setErrorState);
   });
 };
-
 window.onload = init;
