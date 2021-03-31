@@ -39,19 +39,31 @@ const init = () => {
   $email.addEventListener("input", () => validateEmail($email));
   $password.addEventListener("input", () => validatePassword($password));
 
-  const errorHandler = () => {
+  $email.value = "eve.holt@reqres.in";
+  $password.value = "cityslicka2==";
+  validateEmail($email);
+  validatePassword($password);
+
+  const setErrorState = () => {
     $submit.classList.remove("loading");
     $submit.classList.remove("success");
     $submit.classList.add("error");
     $submit.textContent = "Error :(";
   };
 
-  const successHandler = () => {
+  const setSuccessState = () => {
     $submit.classList.remove("loading");
     $submit.classList.remove("error");
     $submit.classList.add("success");
     $submit.textContent = "Sent! :)";
   };
+
+  function handleRequestErrors(response) {
+    if (!response.ok || response.type === "cors") {
+      throw Error(response);
+    }
+    return response;
+  }
 
   $submit?.addEventListener("click", (event) => {
     event.preventDefault();
@@ -68,16 +80,9 @@ const init = () => {
         password: $password.value,
       }),
     })
-      .then((response) => {
-        if (response.status !== 200) {
-          return errorHandler();
-        }
-
-        successHandler();
-      })
-      .catch(() => {
-        errorHandler();
-      });
+      .then(handleRequestErrors)
+      .then(setSuccessState)
+      .catch(setErrorState);
   });
 };
 
