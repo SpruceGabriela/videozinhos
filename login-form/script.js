@@ -53,34 +53,32 @@ const init = () => {
     $submit.textContent = "Sent! :)";
   };
 
-  if ($submit) {
-    $submit.addEventListener("click", (event) => {
-      event.preventDefault();
+  $submit?.addEventListener("click", (event) => {
+    event.preventDefault();
 
-      $submit.textContent = "Loading...";
+    $submit.textContent = "Loading...";
 
-      fetch("https://reqres.in/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: $email.value,
-          password: $password.value,
-        }),
+    fetch("https://reqres.in/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: $email.value,
+        password: $password.value,
+      }),
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          return errorHandler();
+        }
+
+        successHandler();
       })
-        .then((response) => {
-          if (response.status !== 200) {
-            return errorHandler();
-          }
-
-          successHandler();
-        })
-        .catch(() => {
-          errorHandler();
-        });
-    });
-  }
+      .catch(() => {
+        errorHandler();
+      });
+  });
 };
 
 window.onload = init;
